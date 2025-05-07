@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: br.com.Kostylll.StartupTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.456 s -- in br.com.Kostylll.StartupTests
