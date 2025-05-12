@@ -1,1 +1,16 @@
-spring.application.name=rest-with-spring-boot-and-java-kostyl
+spring:
+  application:
+    name: rest-with-spring-boot-and-java-kostyl
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/rest-with-spring-boot-and-java-kostyl?useTimezone=true&serverTimezone=UTC
+    username: root
+    password: Berimbau712!
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    show_sql: false
+    open-in-view: false
