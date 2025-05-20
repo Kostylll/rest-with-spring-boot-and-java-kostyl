@@ -1,7 +1,7 @@
 package br.com.Kostylll.mapper.custom;
 
 import br.com.Kostylll.data.dto.v2.PersonDTOV2;
-import br.com.Kostylll.services.Person;
+import br.com.Kostylll.model.Person;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;

@@ -1,4 +1,4 @@
-package br.com.Kostylll.services;
+package br.com.Kostylll.model;
 
 import jakarta.persistence.*;
 

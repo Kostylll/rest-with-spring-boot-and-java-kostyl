@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.List;
 
 import br.com.Kostylll.data.dto.v1.PersonDTO;
-import br.com.Kostylll.services.Person;
+import br.com.Kostylll.model.Person;
 import br.com.Kostylll.unitTests.mapper.mocks.MockPerson;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.com.Kostylll.data.dto.v1.PersonDTO;
-import br.com.Kostylll.services.Person;
+import br.com.Kostylll.model.Person;
 
 
 public class MockPerson {
