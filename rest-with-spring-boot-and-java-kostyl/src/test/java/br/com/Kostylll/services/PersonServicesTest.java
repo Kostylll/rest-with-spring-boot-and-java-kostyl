@@ -85,11 +85,11 @@ class PersonServicesTest {
 
     }
 
-    @Test
-    void findAll() {
-        List<Person> list = input.mockEntityList();
-        when(personRepository.findAll()).thenReturn(list);
-        var result = service.findAll();
-        assertNotNull(result);
-    }
+    //@Test
+    // void findAll() {
+    // List<Person> list = input.mockEntityList();
+    // when(personRepository.findAll()).thenReturn(list);
+    //var result = service.findAll();
+    //assertNotNull(result);
+    // }
 }

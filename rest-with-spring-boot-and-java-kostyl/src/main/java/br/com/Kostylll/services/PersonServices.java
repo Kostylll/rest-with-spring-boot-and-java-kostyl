@@ -10,11 +10,15 @@ import static  br.com.Kostylll.mapper.ObjectMapper.parseObject;
 import br.com.Kostylll.mapper.custom.PersonMapper;
 import br.com.Kostylll.model.Person;
 import br.com.Kostylll.repository.PersonRepository;
+import jakarta.transaction.Transactional;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,9 +44,22 @@ public class PersonServices {
         return dto;
     }
 
-    public List<PersonDTO> findAll() {
+    public Page<PersonDTO> findAll(Pageable pageable) {
         logger.info("Finding all People");
-        var persons = parseListObject(repository.findAll(), PersonDTO.class);
+
+        var people = repository.findAll(pageable);
+        var peopleWithLinks = people.map(person -> {
+            var dto = parseObject(person, PersonDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        return peopleWithLinks;
+    }
+
+    public List<PersonDTO> findAllEnabled() {
+        logger.info("Finding all enabled People");
+        var persons = parseListObject(repository.findByEnabledTrue(), PersonDTO.class);
         persons.forEach(this::addHateoasLinks);
         return persons;
     }
@@ -75,6 +92,20 @@ public class PersonServices {
         return dto;
     }
 
+    @Transactional
+    public PersonDTO disablePerson(Long id) {
+        logger.info("Disabling Person");
+
+        repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No Record found for this ID!"));
+        repository.disablePerson(id);
+
+        var entity = repository.findById(id).get();
+        var dto = parseObject(entity, PersonDTO.class);
+        addHateoasLinks(dto);
+        return dto;
+    }
+
+
     public void delete(Long id) {
         logger.info("Deleting Person");
         Person entity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("No Record found for this ID!"));
@@ -87,10 +118,12 @@ public class PersonServices {
 
         dto.add(linkTo(methodOn(PersonController.class).delete(dto.getId())).withRel("delete").withType("DELETE"));
 
-        dto.add(linkTo(methodOn(PersonController.class).findAll()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(PersonController.class).findAll(1,12,"asc")).withRel("findAll").withType("GET"));
 
         dto.add(linkTo(methodOn(PersonController.class).create(dto)).withRel("create").withType("POST"));
 
         dto.add(linkTo(methodOn(PersonController.class).update(dto)).withRel("update").withType("PUT"));
+
+        dto.add(linkTo(methodOn(PersonController.class).disablePerson(dto.getId())).withRel("disable").withType("PATCH"));
     }
 }

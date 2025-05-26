@@ -14,6 +14,8 @@ import br.com.Kostylll.mapper.custom.BooksMapper;
 import br.com.Kostylll.model.Books;
 import br.com.Kostylll.repository.BooksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.awt.print.Book;
@@ -28,13 +30,17 @@ public class BooksService {
     @Autowired
     BooksMapper mapper;
 
-    public List<BooksDTO> getAllBooks() {
-        var books = parseListObject(booksRepository.findAll(), BooksDTO.class);
-        books.forEach(this::addHateoasLinks);
-        return books;
-    }
+    public Page<BooksDTO> getAllBooks(Pageable pageable) {
+       var books = booksRepository.findAll(pageable);
 
-    ;
+       var booksWithLinks = books.map(book -> {
+           var dto = parseObject(books, BooksDTO.class);
+           addHateoasLinks(dto);
+           return dto;
+       });
+
+       return booksWithLinks;
+    }
 
     public BooksDTO getBookById(Long id) {
         var book = booksRepository.findById(id).orElse(null);
@@ -74,7 +80,7 @@ public class BooksService {
 
         dto.add(linkTo(methodOn(BooksController.class).deleteBook(dto.getId())).withRel("delete").withType("DELETE"));
 
-        dto.add(linkTo(methodOn(BooksController.class).findAllBooks()).withRel("findAll").withType("GET"));
+        dto.add(linkTo(methodOn(BooksController.class).findAllBooks(1,12,"asc")).withRel("findAll").withType("GET"));
 
         dto.add(linkTo(methodOn(BooksController.class).createBook(dto)).withRel("create").withType("POST"));
 

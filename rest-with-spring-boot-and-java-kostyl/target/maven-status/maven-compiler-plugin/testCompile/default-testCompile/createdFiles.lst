@@ -1,1 +1,4 @@
+br\com\Kostylll\unitTests\mapper\mocks\MockPerson.class
+br\com\Kostylll\services\PersonServicesTest.class
 br\com\Kostylll\StartupTests.class
+br\com\Kostylll\unitTests\mapper\ObjectMapperTests.class
