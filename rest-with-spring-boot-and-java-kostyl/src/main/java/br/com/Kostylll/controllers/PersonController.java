@@ -61,6 +61,13 @@ public class PersonController {
         return person;
     }
 
+    @GetMapping(value = "findByName/{name}" , produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Page<PersonDTO>> findByName(@PathVariable("name") String name, @RequestParam(value = "page" , defaultValue = "0") Integer page, @RequestParam(value = "size" , defaultValue = "12") Integer size) {
+        Pageable pageable = PageRequest.of(page,size,Sort.by("firstName"));
+        return ResponseEntity.ok(service.findByName(name,pageable));
+    }
+
+
     @GetMapping(value = "/enabled", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
     public List<PersonDTO> getEnabled() {
         return service.findAllEnabled();

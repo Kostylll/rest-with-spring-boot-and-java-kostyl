@@ -1,6 +1,8 @@
 package br.com.Kostylll.exception.handler;
 
 import br.com.Kostylll.exception.ExceptionResponse;
+import br.com.Kostylll.exception.FileNotFoundException;
+import br.com.Kostylll.exception.FileStoragreException;
 import br.com.Kostylll.exception.ResourceNotFoundException;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -36,6 +38,27 @@ public class CustomizedEntityResponseHandler extends ResponseEntityExceptionHand
                 request.getDescription(false)
         );
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    };
+
+    @ExceptionHandler(FileNotFoundException.class)
+    public final ResponseEntity<ExceptionResponse> handleFileNotFoundException(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    };
+
+
+    @ExceptionHandler(FileStoragreException.class)
+    public final ResponseEntity<ExceptionResponse> handleFileStoragreException(Exception ex, WebRequest request) {
+        ExceptionResponse response = new ExceptionResponse(
+                new Date(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     };
 
 }

@@ -113,6 +113,20 @@ public class PersonServices {
         repository.delete(entity);
     }
 
+    public Page<PersonDTO> findByName (String name, Pageable pageable) {
+
+        logger.info("Finding a Person");
+        var entity = repository.findPeopleByName(name,pageable);
+
+        var peopleWithLinks = entity.map(person -> {
+            var dto = parseObject(person, PersonDTO.class);
+            addHateoasLinks(dto);
+            return dto;
+        });
+
+        return peopleWithLinks;
+    }
+
     private void addHateoasLinks(PersonDTO dto) {
         dto.add(linkTo(methodOn(PersonController.class).findById(dto.getId())).withSelfRel().withType("GET"));
 
