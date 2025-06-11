@@ -1,9 +1,12 @@
 package br.com.Kostylll.services;
 
 import br.com.Kostylll.config.FileStorageConfig;
+import br.com.Kostylll.exception.FileNotFoundException;
 import br.com.Kostylll.exception.FileStoragreException;
 import com.ctc.wstx.util.StringUtil;
+import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -50,7 +53,15 @@ public class FileStorageService {
         }
     }
 
-
+    public Resource loadFileAsResource (String fileName) {
+        try {
+            Path file = this.fileStorageLocation.resolve(fileName).toAbsolutePath().normalize();
+            Resource resource = (Resource) new UrlResource(file.toUri());
+            return resource;
+        } catch (Exception e){
+            throw new FileNotFoundException("File Not Found: " + fileName);
+        }
+    }
 
 
 

@@ -1,5 +1,13 @@
 file:
   upload-dir: C:\Code\UploadDir
+security:
+  jwt:
+    token:
+      secret-key: 53cr37
+      expire-lenght: 3600000
+email:
+  subject: "Default Subject"
+  message: "Default Message"
 spring:
   application:
     name: rest-with-spring-boot-and-java-kostyl
@@ -16,6 +24,15 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
     show_sql: false
     open-in-view: false
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${EMAIL_USERNAME}
+    password: ${EMAIL_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enabled: true
+      mail.smtp.starttls.required: true
   graphql:
      cors:
       allowed-origin-patterns: http://localhost:8080,http://localhost:3000
